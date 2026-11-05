@@ -6,7 +6,7 @@
     <atom:link href="https://mcig-ggg.github.io/paper-feed/feed.xml" rel="self" type="application/rss+xml" />
     <description>每天挑 3-5 篇：推理 systems、训练 systems、具身 infra，以及想法可迁移的算法论文。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 05 Nov 2026 11:01:02 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2026 11:01:24 +0000</lastBuildDate>
     <item>
       <title>LoopVQ: Sub 1-bit KV Cache Quantization for Looped Transformers</title>
       <link>http://arxiv.org/abs/2611.05304v1</link>
