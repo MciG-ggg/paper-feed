@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>论文简报 · AI infra</title>
+    <link>https://mcig-ggg.github.io/paper-feed/</link>
+    <atom:link href="https://mcig-ggg.github.io/paper-feed/feed.xml" rel="self" type="application/rss+xml" />
+    <description>每天挑 3-5 篇：推理 systems、训练 systems、具身 infra，以及想法可迁移的算法论文。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 05 Nov 2026 11:01:02 +0000</lastBuildDate>
+    <item>
+      <title>LoopVQ: Sub 1-bit KV Cache Quantization for Looped Transformers</title>
+      <link>http://arxiv.org/abs/2611.05304v1</link>
+      <guid isPermaLink="false">paper-2611.05304v1-2026-11-05</guid>
+      <pubDate>Thu, 05 Nov 2026 01:00:00 +0000</pubDate>
+      <category>KV cache</category>
+      <description>&lt;p style=&quot;color:#86868b;font-size:13px;margin:0 0 10px&quot;&gt;KV cache · 量化 · 推理系统&lt;/p&gt;&lt;p style=&quot;font-size:15.5px;margin:0 0 12px&quot;&gt;利用 looped transformer 沿 loop 轴的高冗余，把多个 loop step 的 channel 联合做 vector quantization，并微调 codebook 对齐全精度模型，0.5 bit/element 即可追平常规 LLM 的 KV VQ 方法；叠到 0.25 bit 仍保留大部分 BF16 精度。&lt;/p&gt;&lt;div style=&quot;background:#f5f5f7;border-radius:8px;padding:10px 12px;font-size:14.5px&quot;&gt;&lt;strong style=&quot;font-size:12px;color:#86868b;letter-spacing:.03em&quot;&gt;为什么值得看&lt;/strong&gt;&lt;div&gt;你手上正是版本化 KV cache。这篇少见地在设计层面利用「哪里冗余」来压缩，而不是套 PTQ。已在 SGLang 实现，32K 上下文 decode 延迟几乎减半。可以借鉴两点：冗余维度放在哪一层做联合编码，以及不同 step 的敏感度分级。&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin:14px 0 0;font-size:14px&quot;&gt;&lt;a href=&quot;http://arxiv.org/abs/2611.05304v1&quot;&gt;论文&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;color:#a1a1a6;font-size:12px;margin:14px 0 0&quot;&gt;11 月 5 日 · 周四&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Runway Characters: Serving a 57B Video Diffusion Transformer for Real-Time Conversation</title>
+      <link>http://arxiv.org/abs/2611.05642v1</link>
+      <guid isPermaLink="false">paper-2611.05642v1-2026-11-05</guid>
+      <pubDate>Thu, 05 Nov 2026 01:01:00 +0000</pubDate>
+      <category>serving</category>
+      <description>&lt;p style=&quot;color:#86868b;font-size:13px;margin:0 0 10px&quot;&gt;serving · KV cache · 实时推理&lt;/p&gt;&lt;p style=&quot;font-size:15.5px;margin:0 0 12px&quot;&gt;每 4 帧一块要在 166.7ms 内产出、batch size 1、4×H100，还要跑 4 遍去噪。发现每个 chunk 有 240 次 attention 调用、读 5788 槽 KV cache，但只有 757 个 token 是新的，原 step 里 29% 是重复算整个 cache。于是把这块搬到写时做：ring cache、RoPE 和 FP8 量化只在写入时做一次、位置重置时做 delta rotation。&lt;/p&gt;&lt;div style=&quot;background:#f5f5f7;border-radius:8px;padding:10px 12px;font-size:14.5px&quot;&gt;&lt;strong style=&quot;font-size:12px;color:#86868b;letter-spacing:.03em&quot;&gt;为什么值得看&lt;/strong&gt;&lt;div&gt;这是「write-time 与 read-time 划分」在另一个领域的极端体现。你的 KV cache 一旦加版本，大量 cost 正是重复读整个 cache 而只有小部分是新增。ring cache + 写入时量化 + 位置 delta，几乎可以当成你版本化 KV 的一种解法。&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin:14px 0 0;font-size:14px&quot;&gt;&lt;a href=&quot;http://arxiv.org/abs/2611.05642v1&quot;&gt;论文&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;color:#a1a1a6;font-size:12px;margin:14px 0 0&quot;&gt;11 月 5 日 · 周四&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Where Is VLA Inference Time Spent? Bottlenecks and Optimization Interactions Across GPUs</title>
+      <link>http://arxiv.org/abs/2611.06710v1</link>
+      <guid isPermaLink="false">paper-2611.06710v1-2026-11-05</guid>
+      <pubDate>Thu, 05 Nov 2026 01:02:00 +0000</pubDate>
+      <category>具身 infra</category>
+      <description>&lt;p style=&quot;color:#86868b;font-size:13px;margin:0 0 10px&quot;&gt;具身 infra · VLA · 测量&lt;/p&gt;&lt;p style=&quot;font-size:15.5px;margin:0 0 12px&quot;&gt;7 类优化（CUDA graphs、编译、token pruning、量化等）对 7 个 SOTA VLA，在 4 类 GPU（H100 到 Jetson Thor）上的系统测量。重点不只是单方法收益，而是方法间的交互：CPU launch overhead、带宽、kernel 效率三者如何共同决定每种优化的实际收益。&lt;/p&gt;&lt;div style=&quot;background:#f5f5f7;border-radius:8px;padding:10px 12px;font-size:14.5px&quot;&gt;&lt;strong style=&quot;font-size:12px;color:#86868b;letter-spacing:.03em&quot;&gt;为什么值得看&lt;/strong&gt;&lt;div&gt;具身 infra 这条线极度缺这种横跨多平台的测量研究。你在机器人端做实时推理时最痛的就是「在 H100 上调好的优化，拿到 Orin/Thor 上反而变慢」，这篇的方法论能直接当 checklist。&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin:14px 0 0;font-size:14px&quot;&gt;&lt;a href=&quot;http://arxiv.org/abs/2611.06710v1&quot;&gt;论文&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;color:#a1a1a6;font-size:12px;margin:14px 0 0&quot;&gt;11 月 5 日 · 周四&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>D3D: Decoupled Diffusion Drafting for Asynchronous Speculative Decoding</title>
+      <link>http://arxiv.org/abs/2611.06425v1</link>
+      <guid isPermaLink="false">paper-2611.06425v1-2026-11-05</guid>
+      <pubDate>Thu, 05 Nov 2026 01:03:00 +0000</pubDate>
+      <category>speculative decoding</category>
+      <description>&lt;p style=&quot;color:#86868b;font-size:13px;margin:0 0 10px&quot;&gt;speculative decoding · 推理优化&lt;/p&gt;&lt;p style=&quot;font-size:15.5px;margin:0 0 12px&quot;&gt;target-conditioned 的 diffusion drafter 每轮都要等 target 返回 hidden state，导致 drafting 和 verification 被迫串行。D3D 去掉这个依赖：blockwise denoising 加 auxiliary AR 监督，在完全不需要 target hidden 的情况下也能拿到长 accepted prefix，下一个 block 可以和 verification 并发。再按 acceptance length 剪层，36 层剪掉 5 层几乎不掉点。&lt;/p&gt;&lt;div style=&quot;background:#f5f5f7;border-radius:8px;padding:10px 12px;font-size:14.5px&quot;&gt;&lt;strong style=&quot;font-size:12px;color:#86868b;letter-spacing:.03em&quot;&gt;为什么值得看&lt;/strong&gt;&lt;div&gt;speculative decoding 的上限一直被「串行等待」卡着。异步 drafting 是少数能同时抬高 GPU 利用率和 acceptance length 的方向，剪层策略也可迁移。&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin:14px 0 0;font-size:14px&quot;&gt;&lt;a href=&quot;http://arxiv.org/abs/2611.06425v1&quot;&gt;论文&lt;/a&gt; &amp;nbsp; &lt;a href=&quot;https://github.com/fudan-generative-vision/D3D&quot;&gt;代码&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;color:#a1a1a6;font-size:12px;margin:14px 0 0&quot;&gt;11 月 5 日 · 周四&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A Controlled Experimental Evaluation of Configuration and Cache Architecture in LLM Serving Engines</title>
+      <link>http://arxiv.org/abs/2611.05991v1</link>
+      <guid isPermaLink="false">paper-2611.05991v1-2026-11-05</guid>
+      <pubDate>Thu, 05 Nov 2026 01:04:00 +0000</pubDate>
+      <category>评测方法</category>
+      <description>&lt;p style=&quot;color:#86868b;font-size:13px;margin:0 0 10px&quot;&gt;评测方法 · prefix cache · serving&lt;/p&gt;&lt;p style=&quot;font-size:15.5px;margin:0 0 12px&quot;&gt;表面上对比 vLLM 与 SGLang 的 prefix cache。默认部署下 vLLM median TTFT 最高达 SGLang 的 64 倍，但根因只是一个配置项：长 prompt 是否分块 prefill，而默认值由硬件和版本决定。配置对齐后，容量差距 78% 消失、延迟差距 30–67% 消失。剩下的是同吞吐下 2.4–6.4x 的尾延迟优势，跟 cache-aware 的请求排队顺序有关。&lt;/p&gt;&lt;div style=&quot;background:#f5f5f7;border-radius:8px;padding:10px 12px;font-size:14.5px&quot;&gt;&lt;strong style=&quot;font-size:12px;color:#86868b;letter-spacing:.03em&quot;&gt;为什么值得看&lt;/strong&gt;&lt;div&gt;做 ATG-vllm、ODA-vLLM 时，如果你也遇到过「改了 cache 策略 benchmark 大幅提升」，这篇在提醒你这种结论有多少可能是配置默认值在骗人。建议当成评测方法论存下来，而不只是竞品八卦。&lt;/div&gt;&lt;/div&gt;&lt;p style=&quot;margin:14px 0 0;font-size:14px&quot;&gt;&lt;a href=&quot;http://arxiv.org/abs/2611.05991v1&quot;&gt;论文&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;color:#a1a1a6;font-size:12px;margin:14px 0 0&quot;&gt;11 月 5 日 · 周四&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
